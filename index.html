@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>什么工作配得上优秀的我｜霍兰德职业倾向测评</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f8f5f2 0%, #f0ebe6 100%);
+            color: #444;
+            padding: 24px 16px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width:760px;
+            margin:0 auto;
+            background:#fff;
+            border-radius:20px;
+            padding:36px;
+            box-shadow: 0 8px 28px rgba(123, 107, 97, 0.12);
+        }
+        h1 {
+            text-align:center;
+            color:#7b6b61;
+            font-size:28px;
+            margin-bottom:14px;
+            font-weight:600;
+        }
+        .tip{
+            text-align:center;
+            color:#887b73;
+            font-size:14px;
+            line-height:1.6;
+            margin-bottom:36px;
+        }
+        .q-item{
+            margin-bottom:30px;
+        }
+        .q-title{
+            font-weight:500;
+            margin-bottom:14px;
+            font-size:17px;
+            color:#554941;
+        }
+        .opt{
+            display:block;
+            padding:13px 16px;
+            border:1px solid #ddd2ca;
+            border-radius:12px;
+            margin:10px 0;
+            cursor:pointer;
+            transition: all 0.25s ease;
+        }
+        .opt:hover{
+            border-color:#b99f8f;
+            background:#faf7f4;
+        }
+        .opt.active{
+            border-color:#947c6e;
+            background:#f4ede8;
+        }
+        input[type="radio"]{
+            margin-right:10px;
+            transform:scale(1.1);
+        }
+        .btn-wrap{
+            text-align:center;
+            margin-top:34px;
+            display:flex;
+            gap:16px;
+            justify-content:center;
+            flex-wrap:wrap;
+        }
+        button{
+            padding:13px 34px;
+            border:none;
+            background:#947c6e;
+            color:white;
+            border-radius:12px;
+            font-size:16px;
+            cursor:pointer;
+            transition:0.2s;
+        }
+        button:hover{
+            background:#7b6b61;
+        }
+        button:disabled{
+            background:#c7b8af;
+            cursor:not-allowed;
+        }
+        .btn-secondary{
+            background:#fff;
+            color:#7b6b61;
+            border:1px solid #947c6e;
+        }
+        .btn-secondary:hover{
+            background:#f8f5f2;
+        }
+        .result-box{
+            display:none;
+            margin-top:32px;
+            padding:30px;
+            background:#f8f5f2;
+            border-radius:18px;
+        }
+        .result-title{
+            font-size:24px;
+            color:#7b6b61;
+            font-weight:bold;
+            margin-bottom:22px;
+            text-align:center;
+        }
+        .res-card{
+            background:#fff;
+            padding:24px;
+            border-radius:14px;
+            margin-bottom:20px;
+            box-shadow:0 3px 12px rgba(0,0,0,0.05);
+        }
+        .res-card h3{
+            color:#7b6b61;
+            margin-bottom:14px;
+            font-size:20px;
+        }
+        .res-block{
+            margin-bottom:12px;
+            line-height:1.75;
+        }
+        .label{
+            font-weight:bold;
+            color:#64564c;
+        }
+        .composite-tip{
+            padding:16px;
+            background:#fff4e9;
+            border-radius:12px;
+            margin:22px 0;
+            border-left:4px solid #d4b099;
+        }
+        .footer-note{
+            margin-top:30px;
+            font-size:13px;
+            color:#887b73;
+            line-height:1.6;
+            text-align:center;
+        }
+        /* 弹窗样式 */
+        .modal-mask{
+            display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.45);
+            align-items:center;
+            justify-content:center;
+            padding:20px;
+            z-index:99;
+        }
+        .modal{
+            width:100%;
+            max-width:700px;
+            max-height:85vh;
+            overflow-y:auto;
+            background:#fff;
+            border-radius:18px;
+            padding:30px;
+            position:relative;
+        }
+        .modal h2{
+            text-align:center;
+            color:#7b6b61;
+            margin-bottom:24px;
+        }
+        .modal-close{
+            position:absolute;
+            top:18px;
+            right:22px;
+            font-size:26px;
+            cursor:pointer;
+            color:#887b73;
+        }
+        .type-card{
+            padding:18px;
+            background:#f8f5f2;
+            border-radius:12px;
+            margin-bottom:16px;
+        }
+        .type-card h4{
+            color:#7b6b61;
+            margin-bottom:8px;
+            font-size:17px;
+        }
+        .type-card p{
+            line-height:1.7;
+            color:#554941;
+        }
+        @media(max-width:640px){
+            .container{
+                padding:24px 20px;
+            }
+            h1{
+                font-size:24px;
+            }
+            .modal{
+                padding:24px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>什么工作配得上优秀的我</h1>
+        <div class="tip">霍兰德职业倾向测评 · 基于职业兴趣理论<br/>温馨提示：本测评仅供自我职业探索参考，不能替代专业心理咨询师的正式测评</div>
+        <div id="quizWrap"></div>
+        <div class="btn-wrap">
+            <button id="submitBtn" onclick="calcResult()">查看我的测评结果</button>
+            <button class="btn-secondary" onclick="openModal()">查看霍兰德6型完整介绍</button>
+        </div>
+        <div id="resultBox" class="result-box">
+            <div class="result-title">✨ 你的职业倾向报告</div>
+            <div id="resContent"></div>
+            <div class="btn-wrap">
+                <button class="btn-secondary" onclick="resetQuiz()">重新答题</button>
+            </div>
+        </div>
+        <div class="footer-note">
+            免责声明：霍兰德职业兴趣理论是经典职业测评框架，测评结果仅作为个人职业方向参考。职业选择需要综合个人能力、行业发展、现实条件多方考量，请勿仅凭本报告作为择业唯一决策依据。
+        </div>
+    </div>
+
+    <!-- 霍兰德6型弹窗 -->
+    <div class="modal-mask" id="modalMask">
+        <div class="modal">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2>霍兰德六大职业类型介绍</h2>
+            <div class="type-card">
+                <h4>R｜现实型 · 务实实操者</h4>
+                <p>偏好动手实操、实物落地类事务，擅长技术、设备、工艺，喜欢看得见摸得着的产出，行动务实，偏爱具象化任务。</p>
+            </div>
+            <div class="type-card">
+                <h4>I｜研究型 · 思辨探索者</h4>
+                <p>热爱思考钻研，好奇事物底层原理，擅长搜集信息、逻辑推演与问题论证，偏好理性、学术、分析类工作。</p>
+            </div>
+            <div class="type-card">
+                <h4>A｜艺术型 · 创意表达者</h4>
+                <p>富有想象力，审美敏锐，不喜刻板束缚，喜欢自主创作表达，适合设计、文案、创意策划等可以发挥个性的岗位。</p>
+            </div>
+            <div class="type-card">
+                <h4>S｜社会型 · 助人联结者</h4>
+                <p>共情力强，乐于与人交往，享受帮助他人成长，擅长倾听、疏导、人际协调，适合教育、咨询、用户服务类方向。</p>
+            </div>
+            <div class="type-card">
+                <h4>E｜企业型 · 统筹推动者</h4>
+                <p>目标感强，具备动员说服、资源统筹能力，乐于牵头带领团队达成业务目标，适合项目管理、商务、运营管理岗位。</p>
+            </div>
+            <div class="type-card">
+                <h4>C｜常规型 · 秩序守护者</h4>
+                <p>细心严谨，喜爱清晰的流程与标准，擅长台账、数据、档案、体系管控，稳定性强，适合财务、质控、行政类岗位。</p>
+            </div>
+        </div>
+    </div>
+
+<script>
+// 题库
+const questionList = [
+    {
+        q:"1. 闲暇时间，我更愿意去做？",
+        opt:[
+            {t:"动手拆装设备、实操制作实物",k:"R"},
+            {t:"查阅文献，钻研原理，思考事物底层逻辑",k:"I"},
+            {t:"画画、写故事、构思原创设计",k:"A"},
+            {t:"和朋友谈心，帮助他人梳理困扰",k:"S"},
+            {t:"组织活动，说服别人，牵头推进项目",k:"E"},
+            {t:"整理台账，归档资料，核对清单，梳理流程",k:"C"},
+        ]
+    },
+    {
+        q:"2. 遇到难题，我优先会？",
+        opt:[
+            {t:"动手实操试错，边做边调整方案",k:"R"},
+            {t:"搜集资料、做分析论证，寻找客观答案",k:"I"},
+            {t:"跳出固有框架，构思新颖的解决思路",k:"A"},
+            {t:"和相关人员沟通，倾听各方感受再协调",k:"S"},
+            {t:"快速锁定目标，动员团队落地拿到结果",k:"E"},
+            {t:"对照规范流程，一步步按标准执行核查",k:"C"},
+        ]
+    },
+    {
+        q:"3. 理想工作，最吸引我的是？",
+        opt:[
+            {t:"可以亲手落地，产出实实在在看得见的成果",k:"R"},
+            {t:"可以持续探索新知，研究事物内在规律",k:"I"},
+            {t:"拥有创作自由，表达属于自己独特想法",k:"A"},
+            {t:"能够帮助他人成长，带给别人正向价值",k:"S"},
+            {t:"拥有主导权，统筹项目，带动团队拿到业绩",k:"E"},
+            {t:"职责清晰，制度稳定，工作流程有章可循",k:"C"},
+        ]
+    },
+    {
+        q:"4. 面对一堆杂乱的资料，我倾向？",
+        opt:[
+            {t:"优先挑核心事项动手落地处理",k:"R"},
+            {t:"挖掘数据背后的逻辑，做深度分析",k:"I"},
+            {t:"重新设计全新的展示形式",k:"A"},
+            {t:"找人分工协作，同步各自需求",k:"S"},
+            {t:"快速梳理优先级，推动尽快闭环",k:"E"},
+            {t:"分门别类建立清单，标准化归档核对",k:"C"},
+        ]
+    },
+    {
+        q:"5. 团队出现意见分歧时，我会？",
+        opt:[
+            {t:"聚焦落地，优先把实物层面问题解决",k:"R"},
+            {t:"摆事实证据，客观辨析方案优劣",k:"I"},
+            {t:"构思全新备选方案绕开矛盾点",k:"A"},
+            {t:"共情每个人感受，调和人际关系",k:"S"},
+            {t:"明确目标，推动大家达成统一行动方向",k:"E"},
+            {t:"查阅规章制度，依照既定规则判断",k:"C"},
+        ]
+    },
+    {
+        q:"6. 学习一项新技能，更喜欢？",
+        opt:[
+            {t:"上手实操反复练习直到熟练",k:"R"},
+            {t:"阅读专业资料，弄懂底层原理",k:"I"},
+            {t:"自由摸索，玩出不一样创意用法",k:"A"},
+            {t:"和前辈交流，在互动当中学习",k:"S"},
+            {t:"带着项目目标，边带领团队边实践",k:"E"},
+            {t:"跟着教程一步步按标准流程学习",k:"C"},
+        ]
+    },
+    {
+        q:"7. 最能带给我成就感的事情是？",
+        opt:[
+            {t:"成功完成实物制作、设备调试",k:"R"},
+            {t:"解开复杂问题，发现新的规律认知",k:"I"},
+            {t:"产出原创的创意作品",k:"A"},
+            {t:"帮他人走出困境，看见他人变好",k:"S"},
+            {t:"带领团队完成目标，拿到业务成果",k:"E"},
+            {t:"把繁杂事务整理得井井有条零差错",k:"C"},
+        ]
+    },
+    {
+        q:"8. 每日任务安排，我偏好？",
+        opt:[
+            {t:"目标清晰，马上动手开工",k:"R"},
+            {t:"留有充足时间自主钻研思考",k:"I"},
+            {t:"不设死板时间表，跟随灵感节奏",k:"A"},
+            {t:"有较多与人沟通对接的机会",k:"S"},
+            {t:"有明确的业绩目标，可以自主统筹安排",k:"E"},
+            {t:"完整计划表，逐项有序完成",k:"C"},
+        ]
+    },
+    {
+        q:"9. 看到一款新仪器/新工具，第一想法是？",
+        opt:[
+            {t:"上手操作试一试实际性能",k:"R"},
+            {t:"研究它的原理、参数与技术逻辑",k:"I"},
+            {t:"想想能不能玩出新创意用法",k:"A"},
+            {t:"和使用者交流它带来的帮助与体验",k:"S"},
+            {t:"思考它能落地带来哪些业务收益",k:"E"},
+            {t:"阅读说明书，熟悉全部操作规范",k:"C"},
+        ]
+    },
+    {
+        q:"10. 长时间独自办公，我的感受？",
+        opt:[
+            {t:"很舒服，可以专心做实操任务",k:"R"},
+            {t:"很合适，安静环境方便深度思考研究",k:"I"},
+            {t:"只要能自由创作，独处也很好",k:"A"},
+            {t:"容易孤单，希望多一些人际互动",k:"S"},
+            {t:"缺少协同伙伴，推进效率会受限",k:"E"},
+            {t:"只要流程清楚，独自办公完全没问题",k:"C"},
+        ]
+    },
+    {
+        q:"11. 接到突发临时任务，我会？",
+        opt:[
+            {t:"立刻行动优先落地执行",k:"R"},
+            {t:"收集相关信息，评估风险与可行性",k:"I"},
+            {t:"重新构思一套更有新意的方案",k:"A"},
+            {t:"同步相关人员，沟通协调资源",k:"S"},
+            {t:"快速定目标，分配事项推进落地",k:"E"},
+            {t:"梳理步骤，补全流程做好记录",k:"C"},
+        ]
+    },
+    {
+        q:"12. 评判一份工作做得好不好，我更看重？",
+        opt:[
+            {t:"实物品质、落地效果",k:"R"},
+            {t:"逻辑严谨、结论客观可信",k:"I"},
+            {t:"创意独特、富有美感",k:"A"},
+            {t:"用户体验、他人的正向感受",k:"S"},
+            {t:"目标达成、业务成果",k:"E"},
+            {t:"流程合规、准确无误",k:"C"},
+        ]
+    },
+    {
+        q:"13. 我更擅长？",
+        opt:[
+            {t:"实操落地，硬件、实物类事务处理",k:"R"},
+            {t:"逻辑分析，挖掘事物内在规律",k:"I"},
+            {t:"创意构思、审美表达、原创产出",k:"A"},
+            {t:"共情倾听、人际支持与疏导",k:"S"},
+            {t:"统筹组织，动员、带领团队推进项目",k:"E"},
+            {t:"信息归档，台账数据、流程管控",k:"C"},
+        ]
+    },
+    {
+        q:"14. 一份工作最让我难以接受的是？",
+        opt:[
+            {t:"全程空想，完全没有动手落地空间",k:"R"},
+            {t:"问题没有客观答案，缺少探索研究空间",k:"I"},
+            {t:"条条框框极多，完全没有自主创作空间",k:"A"},
+            {t:"长期孤立，几乎不需要与人打交道",k:"S"},
+            {t:"没有自主决策权，只能被动执行指令",k:"E"},
+            {t:"规则模糊，没有清晰标准，变动频繁",k:"C"},
+        ]
+    },
+    {
+        q:"15. 未来我最希望持续精进的能力是？",
+        opt:[
+            {t:"实操工艺、技术动手能力",k:"R"},
+            {t:"科研思辨、洞察分析能力",k:"I"},
+            {t:"创意设计、艺术表达能力",k:"A"},
+            {t:"共情关怀、人际支持能力",k:"S"},
+            {t:"项目统筹、团队带领能力",k:"E"},
+            {t:"体系管理、精细化流程管控能力",k:"C"},
+        ]
+    }
+]
+// 结果文案库
+const resDict = {
+    "R":{
+        name:"现实型｜务实实操者",
+        job:"工程技术、设备运维、工艺技师、硬件调试、农林技术、智能制造技术员",
+        good:"行动力强，务实落地，擅长把方案转化为实体成果，动手试错能力强，擅长处理硬件实物事务",
+        improve:"沉淀操作文档复盘经验；练习把技术难点通俗地沟通表达；动手前增加风险预判，减少返工"
+    },
+    "I":{
+        name:"研究型｜思辨探索者",
+        job:"科研研发、数据分析、医学研究、算法、行业研究员、实验室、产品调研",
+        good:"好奇心强，擅长独立深度思考，搜集信息论证问题，理性客观，善于挖掘底层逻辑",
+        improve:"把研究结论转化成落地方案；加强跨团队沟通输出能力；不要过度追求完美论证而延误项目节点"
+    },
+    "A":{
+        name:"艺术型｜创意表达者",
+        job:"视觉设计、文案策划、品牌、新媒体创作、插画、影视编导、空间设计",
+        good:"想象力丰富，审美敏锐，擅长跳出固有框架产出原创内容，拥有很强自我表达欲",
+        improve:"创意拆解成项目排期落地；客观区分作品反馈≠否定个人；兼顾业务目标、交付周期约束"
+    },
+    "S":{
+        name:"社会型｜助人联结者",
+        job:"教育培训、心理咨询、HR、用户运营、社群、社工、客户成功",
+        good:"共情力强，善于感知他人情绪，擅长倾听协调，乐于帮助他人建立成长",
+        improve:"建立情绪边界防止共情内耗；沟通后持续跟进落地结果；学会用客观指标评估服务效果"
+    },
+    "E":{
+        name:"企业型｜统筹推动者",
+        job:"项目负责人、运营主管、销售管理、品牌负责人、商务负责人",
+        good:"目标感强，领导力、说服动员能力强，擅长统筹资源，推动团队拿到业务结果",
+        improve:"耐心倾听团队成员不同想法；落地前做好细节风险评估；兼顾流程规范，避免激进推进"
+    },
+    "C":{
+        name:"常规型｜秩序守护者",
+        job:"财务会计、档案管理、行政、质控、体系专员、数据台账管理",
+        good:"细心严谨，条理性强，遵守规范，精细化处理复杂的数据台账，稳定性高",
+        improve:"在底线之内练习弹性应变；看懂数据背后整条业务链路；主动思考现有流程优化空间"
+    }
+}
+//渲染题目
+function renderQuiz(){
+    let wrap = document.getElementById("quizWrap");
+    let html = "";
+    questionList.forEach((item,qIdx)=>{
+        html += `<div class="q-item">`
+        html += `<div class="q-title">${item.q}</div>`
+        item.opt.forEach((o,oidx)=>{
+            html += `<label class="opt">
+                <input type="radio" name="q${qIdx}" value="${o.k}" onchange="selectOpt(this)">
+                ${o.t}
+            </label>`
+        })
+        html += `</div>`
+    })
+    wrap.innerHTML = html;
+}
+//选项选中高亮
+function selectOpt(el){
+    let parent = el.closest(".q-item");
+    parent.querySelectorAll(".opt").forEach(lab=>lab.classList.remove("active"));
+    el.closest(".opt").classList.add("active");
+}
+//计分
+function calcResult(){
+    let score = {R:0,I:0,A:0,S:0,E:0,C:0};
+    let allAnswered = true;
+    questionList.forEach((item,qIdx)=>{
+        let sel = document.querySelector(`input[name="q${qIdx}"]:checked`);
+        if(!sel){
+            allAnswered = false;
+        }else{
+            score[sel.value] += 1;
+        }
+    })
+    if(!allAnswered){
+        alert("请完成全部15道题目再提交");
+        return;
+    }
+    //排序取最高
+    let arr = Object.entries(score).sort((a,b)=>b[1]-a[1]);
+    let top1Key = arr[0][0];
+    let top2Key = arr[1][0];
+    let top1Val = arr[0][1];
+    let top2Val = arr[1][1];
+    let report = resDict[top1Key];
+    let html = `<div class="res-card"><h3>🎯 主职业类型：${report.name}</h3>`;
+    html += `<div class="res-block"><span class="label">✅ 适配岗位参考：</span>${report.job}</div>`;
+    html += `<div class="res-block"><span class="label">💪 你的优势能力：</span>${report.good}</div>`;
+    html += `<div class="res-block"><span class="label">📈 提升方向：</span>${report.improve}</div></div>`;
+    //复合型提示，得分差距<=2判定复合，展示第二类型完整卡片
+    if(top1Val - top2Val <= 2){
+        let report2 = resDict[top2Key];
+        html += `<div class="composite-tip"><strong>💡 复合型特质提示</strong>：你的第二项特质得分十分接近主类型，属于复合型职业倾向，可以优先寻找融合两类特质的岗位，发挥多重优势。</div>`
+        html += `<div class="res-card"><h3>🔗 次优势类型：${report2.name}</h3>`;
+        html += `<div class="res-block"><span class="label">✅ 适配岗位参考：</span>${report2.job}</div>`;
+        html += `<div class="res-block"><span class="label">💪 你的优势能力：</span>${report2.good}</div>`;
+        html += `<div class="res-block"><span class="label">📈 提升方向：</span>${report2.improve}</div></div>`;
+    }
+    document.getElementById("resContent").innerHTML = html;
+    document.getElementById("resultBox").style.display="block";
+    document.getElementById("resultBox").scrollIntoView({behavior:"smooth"});
+}
+//重置答题
+function resetQuiz(){
+    document.querySelectorAll("input[type=radio]").forEach(radio=>radio.checked=false);
+    document.querySelectorAll(".opt").forEach(lab=>lab.classList.remove("active"));
+    document.getElementById("resultBox").style.display="none";
+    window.scrollTo({top:0,behavior:"smooth"});
+}
+//弹窗
+function openModal(){
+    document.getElementById("modalMask").style.display="flex";
+}
+function closeModal(){
+    document.getElementById("modalMask").style.display="none";
+}
+document.getElementById("modalMask").onclick = function(e){
+    if(e.target === this) closeModal();
+}
+renderQuiz();
+</script>
+</body>
+</html>
